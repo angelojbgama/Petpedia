@@ -8,13 +8,6 @@ from django.views.generic.edit import FormView
 
 _CONSTANTE_TEMPLATE_NAME_INICIO = "pages/index.html"
 _CONSTANTE_TEMPLATE_NAME_SOBRE = "pages/about.html"
-_CONSTANTE_TEMPLATE_NAME_CARACTERISTICAS = "pages/features.html"
-_CONSTANTE_TEMPLATE_NAME_TIME = "pages/team.html"
-_CONSTANTE_TEMPLATE_NAME_TESTEMUNHOS = "pages/testimonies.html"
-_CONSTANTE_TEMPLATE_NAME_FAQ = "pages/faq.html"
-_CONSTANTE_TEMPLATE_NAME_CONTATO = "pages/contact.html"
-
-
 
 
 
@@ -63,36 +56,3 @@ class SobrePageView(TemplateView):
         context['title_aba'] = 'Sobre a Verde Fresco!'
         return context
     
-class CaracteristicasPageView(TemplateView):
-    '''
-    View para renderizar a page CARACTERISTICAS
-    '''
-    template_name = _CONSTANTE_TEMPLATE_NAME_CARACTERISTICAS
-
-
-class TimePageView(TemplateView):
-    '''
-    View para renderizar a page TIME
-    '''
-    template_name = _CONSTANTE_TEMPLATE_NAME_TIME
-    
-    
-class TestemUnhosPageView(TemplateView):
-    '''
-    View para renderizar a page TESTMUNHOS
-    '''
-    template_name = _CONSTANTE_TEMPLATE_NAME_TESTEMUNHOS
-    
-    
-class FAQPageView(TemplateView):
-    '''
-    View para renderizar a page FAQ
-    '''
-    template_name = _CONSTANTE_TEMPLATE_NAME_FAQ
-
-
-class ContatoPageView(TemplateView):
-    '''
-    View para renderizar a page CONTATO
-    '''
-    template_name = _CONSTANTE_TEMPLATE_NAME_CONTATO

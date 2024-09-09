@@ -13,39 +13,69 @@
   <link rel="stylesheet" href="{% static 'css/animate.css' %}">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+  <!-- Font Awesome (Opcional, apenas se precisar de ícones) -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 </head>
 <body>
   {% include 'segment/navbar.html' %}
-  
-  <!-- Exibição das mensagens de feedback -->
-  <div class="container">
-      {% if messages %}
-          <div class="messages">
-              {% for message in messages %}
-                  <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-                      {{ message }}
-                  </div>
-              {% endfor %}
-          </div>
-      {% endif %}
-  </div>
-  <!-- Exibição das mensagens de feedback -->
 
-  {% block content %}
-  
+  <div class="container mt-4">
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} d-flex align-items-center" role="alert">
+                    {% if message.tags == 'success' %}
+                        <i class="fas fa-check-circle me-2"></i>
+                    {% elif message.tags == 'error' %}
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                    {% elif message.tags == 'warning' %}
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                    {% elif message.tags == 'info' %}
+                        <i class="fas fa-info-circle me-2"></i>
+                    {% endif %}
+                    <div class="flex-grow-1 text-center">
+                        {{ message }}
+                    </div>
+                    <span class="close" onclick="closeAlert(this)">X</span>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+{% block content %}
   {% endblock %}
+
   {% include 'segment/footer.html' %}
-<!-- SCRIPTS START -->
+
+  <!-- SCRIPTS START -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+
 <!-- SCRIPTS END -->
 
 <!-- ScrollIt JS Start -->
 <script src="{% static 'js/scrollIt.min.js' %}"></script>
+
+
 <script src="{% static 'js/wow.min.js' %}"></script>
+
+
+<script>
+  function closeAlert(element) {
+      const alert = element.closest('.alert');
+      if (alert) {
+          alert.style.opacity = '0';
+          setTimeout(() => alert.remove(), 500); // Remove após a animação de opacidade
+      }
+  }
+</script>
+
+
+
 <script>
   wow = new WOW();
   wow.init();
@@ -108,6 +138,59 @@
   });
 </script>
 <!-- ScrollIt JS End -->
+
+<!--Estilo das notificações-->
+<style>
+  .alert {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1050;
+      margin: 0 auto;
+      width: auto;
+      max-width: 90%;
+      border-radius: 0.25rem;
+      padding: 15px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: opacity 0.5s ease;
+  }
+  .alert .close {
+      font-size: 1.25rem; /* Tamanho do caractere de fechar */
+      font-weight: bold;
+      color: #000;
+      cursor: pointer;
+      padding-left: 1rem;
+      transition: color 0.3s ease;
+  }
+  .alert .close:hover {
+      color: #666;
+  }
+  .alert-success {
+      background-color: #d4edda;
+      color: #155724;
+  }
+  .alert-error {
+      background-color: #f8d7da;
+      color: #721c24;
+  }
+  .alert-warning {
+      background-color: #fff3cd;
+      color: #856404;
+  }
+  .alert-info {
+      background-color: #d1ecf1;
+      color: #0c5460;
+  }
+  .alert .fas {
+      font-size: 1.25rem; /* Tamanho do ícone */
+  }
+</style>
+<!--Estilo das notificações-->
+
 
 </body>
 </html>

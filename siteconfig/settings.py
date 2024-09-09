@@ -2,12 +2,18 @@ from pathlib import Path
 import os
 from django.core.management.utils import get_random_secret_key
 import logging
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+from decouple import config, Csv
+
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = get_random_secret_key()
 
-DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool)
+
 
 ALLOWED_HOSTS = ['*']
 
@@ -31,6 +37,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+    'siteconfig.middleware.RequestLoggingMiddleware',
 ]
 
 ROOT_URLCONF = 'siteconfig.urls'
@@ -56,7 +64,7 @@ WSGI_APPLICATION = 'siteconfig.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, config('DATABASE_URL', default='db.sqlite3')),
     }
 }
 
@@ -100,31 +108,55 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 # Configuração de e-mail para produção
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = 'smtp.gmail.com'  # Substitua pelo servidor SMTP real
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'angelojbgama@gmail.com'
-EMAIL_HOST_PASSWORD = 'nukk mbyo fmgt pvgp'
-DEFAULT_FROM_EMAIL = 'angelojbgama@gmail.com'
+EMAIL_HOST = config('EMAIL_HOST')  # Substitua pelo servidor SMTP real
+EMAIL_PORT = config('EMAIL_PORT')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
 
 
 
-
+# Configuração logs 
+# Configuração básica de logging
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
     'handlers': {
         'file': {
             'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': 'debug.log',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'django_debug.log'),
+            'maxBytes': 1024*1024*5,  # 5 MB
+            'backupCount': 5,
+            'formatter': 'verbose',
+        },
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
         },
     },
     'loggers': {
         'django': {
-            'handlers': ['file'],
+            'handlers': ['file', 'console'],
             'level': 'DEBUG',
             'propagate': True,
+        },
+        'django.db.backends': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': False,
         },
     },
 }
