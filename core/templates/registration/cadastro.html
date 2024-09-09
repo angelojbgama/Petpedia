@@ -2,7 +2,6 @@
 
 {% load static %}
 {% block content %}
-{% include 'segment/navbar.html' %}
 
 <!-- Cadastro Start -->
 <section class="contact section-padding" data-scroll-index='6'>
@@ -27,8 +26,9 @@
                                         <input type="text" class="form-input w-100" 
                                                name="{{ form.username.name }}" 
                                                id="{{ form.username.id_for_label }}" 
-                                               value="{{ form.username.value|default:user.username }}" 
-                                               placeholder="Nome de Usuário" required>
+                                               value="{{ form.username.value }}" 
+                                               placeholder="Nome de Usuário" 
+                                               required>
                                     </div>
                                     <div class="col">
                                         {{ form.email.label_tag }}
@@ -36,7 +36,8 @@
                                                name="{{ form.email.name }}" 
                                                id="{{ form.email.id_for_label }}" 
                                                value="{{ form.email.value }}" 
-                                               placeholder="E-mail" required>
+                                               placeholder="E-mail" 
+                                               required>
                                     </div>
                                 </div>
                                 
@@ -46,18 +47,20 @@
                                         <input type="password" class="form-input w-100" 
                                                name="{{ form.password1.name }}" 
                                                id="{{ form.password1.id_for_label }}" 
-                                               placeholder="Senha" required>
+                                               placeholder="Senha" 
+                                               required>
                                     </div>
                                     <div class="col">
                                         {{ form.password2.label_tag }}
                                         <input type="password" class="form-input w-100" 
                                                name="{{ form.password2.name }}" 
                                                id="{{ form.password2.id_for_label }}" 
-                                               placeholder="Confirme a Senha" required>
+                                               placeholder="Confirme a Senha" 
+                                               required>
                                     </div>
                                 </div>
                             
-                                <button class="btn-grad w-100 text-uppercase" type="submit" name="button">Cadastrar</button>
+                                <button class="btn-grad w-100 text-uppercase" type="submit">Cadastrar</button>
                             </form>
                             
                         </div>
@@ -82,17 +85,6 @@
 </section>
 <!-- Cadastro End -->
 
-{% include 'segment/footer.html' %}
-
 {% endblock %}
 
 <!-- JavaScript para atualizar o valor do campo nome -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var usernameField = document.getElementById('{{ form.username.id_for_label }}');
-        
-        usernameField.addEventListener('input', function() {
-            this.value = this.value.trim(); // Remove espaços em branco adicionais
-        });
-    });
-</script>
