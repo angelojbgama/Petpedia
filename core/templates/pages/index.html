@@ -3,9 +3,7 @@
 
   {% block content %}
 
-  {% include 'segment/Navbar.html' %}
-  {% if mensagem_sucesso %}
-  <p class="mensagem-sucesso">{{ mensagem_sucesso }}</p>
+
 {% endif %}
 
   {% include 'segment/banner.html' %}
@@ -17,6 +15,5 @@
   {% include 'segment/faq.html' %}
   {% include 'segment/contact.html' %}
 
-  {% include 'segment/Footer.html' %}
   
   {% endblock %}

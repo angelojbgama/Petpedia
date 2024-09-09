@@ -1,0 +1,98 @@
+{% extends 'pages/base.html' %}
+
+{% load static %}
+{% block content %}
+{% include 'segment/navbar.html' %}
+
+<!-- Cadastro Start -->
+<section class="contact section-padding" data-scroll-index='6'>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="sectioner-header text-center">
+                    <h3>Cadastro</h3>
+                    <span class="line"></span>
+                    <p>Preencha o formulário abaixo para se cadastrar.</p>
+                </div>
+
+                <div class="section-content">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-8">
+                            <form action="{% url 'cadastro' %}" id="signup_form" method="post">
+                                {% csrf_token %}
+                                
+                                <div class="row">
+                                    <div class="col">
+                                        {{ form.username.label_tag }}
+                                        <input type="text" class="form-input w-100" 
+                                               name="{{ form.username.name }}" 
+                                               id="{{ form.username.id_for_label }}" 
+                                               value="{{ form.username.value|default:user.username }}" 
+                                               placeholder="Nome de Usuário" required>
+                                    </div>
+                                    <div class="col">
+                                        {{ form.email.label_tag }}
+                                        <input type="email" class="form-input w-100" 
+                                               name="{{ form.email.name }}" 
+                                               id="{{ form.email.id_for_label }}" 
+                                               value="{{ form.email.value }}" 
+                                               placeholder="E-mail" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col">
+                                        {{ form.password1.label_tag }}
+                                        <input type="password" class="form-input w-100" 
+                                               name="{{ form.password1.name }}" 
+                                               id="{{ form.password1.id_for_label }}" 
+                                               placeholder="Senha" required>
+                                    </div>
+                                    <div class="col">
+                                        {{ form.password2.label_tag }}
+                                        <input type="password" class="form-input w-100" 
+                                               name="{{ form.password2.name }}" 
+                                               id="{{ form.password2.id_for_label }}" 
+                                               placeholder="Confirme a Senha" required>
+                                    </div>
+                                </div>
+                            
+                                <button class="btn-grad w-100 text-uppercase" type="submit" name="button">Cadastrar</button>
+                            </form>
+                            
+                        </div>
+
+                        <div class="col-sm-12 col-md-12 col-lg-4">
+                            <div class="contact-info white">
+                                <!-- Você pode adicionar qualquer informação adicional aqui -->
+                                <div class="contact-item media"> 
+                                    <i class="fa fa-info-circle media-left media-right-margin"></i>
+                                    <div class="media-body">
+                                        <p class="text-uppercase">Dúvidas?</p>
+                                        <p class="text-uppercase">Entre em contato conosco</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Cadastro End -->
+
+{% include 'segment/footer.html' %}
+
+{% endblock %}
+
+<!-- JavaScript para atualizar o valor do campo nome -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var usernameField = document.getElementById('{{ form.username.id_for_label }}');
+        
+        usernameField.addEventListener('input', function() {
+            this.value = this.value.trim(); // Remove espaços em branco adicionais
+        });
+    });
+</script>

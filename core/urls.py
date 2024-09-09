@@ -9,4 +9,5 @@ urlpatterns = [
     path("testimonies/", TestemUnhosPageView.as_view(), name="testemunhos"),
     path("faq/", FAQPageView.as_view(), name="faq"),
     path("contact/", ContatoPageView.as_view(), name="contato"),
+
 ]
