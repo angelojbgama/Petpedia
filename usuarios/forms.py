@@ -55,3 +55,8 @@ class CustomAuthenticationForm(AuthenticationForm):
                 raise forms.ValidationError("Este usuário está inativo.")
         
         return cleaned_data
+
+class CustomUserChangeForm(forms.ModelForm):
+    class Meta:
+        model = USUARIO
+        fields = ('localidade', 'telefone', 'is_ong', 'nome_ong')

@@ -38,11 +38,14 @@
         <a href="{% url 'login' %}" {% if request.path == '/login/' %}class="active"{% endif %}>Login</a>
         <a href="{% url 'register' %}" {% if request.path == '/register/' %}class="active"{% endif %}>Registrar</a>
         <a href="{% url 'password_reset' %}" {% if request.path == '/register/' %}class="active"{% endif %}>Redefinir Senha</a>
+        <a href="{% url 'update_user' %}" >Ataulizar Cadstro</a>
+        <a href="{% url 'usuarioviewlist' %}" >Ver Dados de Cadstro</a>
+
         {% if user.is_authenticated %}
         <a>Bem-vindo, {{ user.username }}!</a>
         <form action="{% url 'logout' %}" method="post" class="logout-form">
             {% csrf_token %}
-            <button type="submit">Sair</button>
+            <a><button type="submit">Sair</button></a>
         </form>
 
     {% endif %}

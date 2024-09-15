@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Atualozação de Cadastro{% endblock %}
 
 {% block content %}
 <h2>Login</h2>
 <form method="post" action="{% url 'login' %}">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">atualizar campos</button>
+    <button type="submit">Entrar</button>
 </form>
 {% endblock %}

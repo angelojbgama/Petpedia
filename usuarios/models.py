@@ -10,7 +10,7 @@ class USUARIO(AbstractUser):
     localidade = models.CharField(max_length=255, null=True, blank=True)
     telefone = models.CharField(max_length=15, blank=True, null=True)
     is_ong = models.BooleanField(default=False)
-    nome_ong = models.CharField(max_length=255, null=True, blank=True)  # Novo campo
+    nome_ong = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         return self.username

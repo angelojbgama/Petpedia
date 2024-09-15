@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Perfil do Usuário{% endblock %}
+
+{% block content %}
+<h2>Perfil do Usuário</h2>
+<p><strong>Nome de Usuário:</strong> {{ user.username }}</p>
+<p><strong>Email:</strong> {{ user.email }}</p>
+<p><strong>Localidade:</strong> {{ user.localidade }}</p>
+<p><strong>Telefone:</strong> {{ user.telefone }}</p>
+<p><strong>Tipo de Usuário:</strong> {% if user.is_ong %}ONG{% else %}Particular{% endif %}</p>
+{% if user.is_ong %}
+    <p><strong>Nome da ONG:</strong> {{ user.nome_ong }}</p>
+{% endif %}
+<a href="{% url 'logout' %}">Sair</a>
+{% endblock %}

@@ -14,8 +14,10 @@ from django.contrib.auth import get_user_model
 from .forms import PasswordResetCustomForm, CustomAuthenticationForm
 from django.contrib.auth import views as auth_views
 from .forms import CustomSetNewPasswordForm
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, CustomUserChangeForm
 from django.contrib.auth.views import LoginView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import DetailView
 
 
 User = get_user_model()
@@ -26,6 +28,11 @@ class CustomLoginView(LoginView):
     template_name = 'registration/login.html'
     success_url = reverse_lazy('login')
 
+
+class CustomUserUpdadteView(FormView):
+    form_class = CustomUserChangeForm
+    template_name = 'registration/login.html'
+    success_url = reverse_lazy('login')
 
 class RegisterView(CreateView):
     """
@@ -99,3 +106,12 @@ class CustomPasswordResetCompleteView(auth_views.PasswordResetCompleteView):
     View para troca de senha realizada com sucesso
     """
     template_name = 'registration/password_reset_c.html'
+
+class PerfilUsuarioView(LoginRequiredMixin, DetailView):
+    model = User
+    template_name = 'registration/usuarioviewlist.html'
+    context_object_name = 'user'
+
+    def get_object(self):
+        # Retorna o usuário atual
+        return self.request.user
