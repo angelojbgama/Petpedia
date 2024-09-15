@@ -1,59 +1,12 @@
-{% extends 'pages/base.html' %}
+{% extends 'base.html' %}
 
-{% load static %}
+{% block title %}Login{% endblock %}
+
 {% block content %}
-
-<!-- Login Start -->
-<section class="contact section-padding" data-scroll-index='6'>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="sectioner-header text-center">
-                    <h3>Login</h3>
-                    <span class="line"></span>
-                    <p>Faça login para acessar sua conta.</p>
-                </div>
-
-                <div class="section-content">
-                    <div class="row">
-                        <div class="col-sm-12 col-md-12 col-lg-8">
-                            <form id="login_form" method="post" action="">
-                                {% csrf_token %}
-
-                                <div class="row">
-                                    <div class="col">
-                                        {{ form.username.label_tag }}
-                                        <input type="text" class="form-input w-100" 
-                                               name="{{ form.username.name }}" 
-                                               id="{{ form.username.id_for_label }}" 
-                                               placeholder="Nome de Usuário" required>
-                                    </div>
-                                    <div class="col">
-                                        {{ form.password.label_tag }}
-                                        <input type="password" class="form-input w-100" 
-                                               name="{{ form.password.name }}" 
-                                               id="{{ form.password.id_for_label }}" 
-                                               placeholder="Senha" required>
-                                    </div>
-                                </div>
-
-                                <button class="btn-grad w-100 text-uppercase" type="submit" name="button">Entrar</button>
-
-                                <!-- Link para recuperação de senha -->
-                                <div class="text-center mt-3">
-                                    <a href="{% url 'password_reset' %}" class="text-link">Esqueceu a senha?</a>
-                                </div>
-                            </form>
-                        </div>
-                        
-                        <!-- Informações ou links adicionais podem ir aqui -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Login End -->
-
-  
+<h2>Login</h2>
+<form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Entrar</button>
+</form>
 {% endblock %}

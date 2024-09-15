@@ -1,6 +1,4 @@
-# usuarios/views.py
 from django.views.generic.edit import CreateView
-from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
 from django.views.generic import FormView
@@ -12,23 +10,37 @@ from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from django.conf import settings
 from django.shortcuts import redirect
-from django.contrib.auth import get_user_model
-from .forms import PasswordResetCustomForm
+from django.contrib.auth import get_user_model 
+from .forms import PasswordResetCustomForm, CustomAuthenticationForm
 from django.contrib.auth import views as auth_views
 from .forms import CustomSetNewPasswordForm
-from .forms import CustomUserCreationForm  # Importe o formulário personalizado
+from .forms import CustomUserCreationForm
+from django.contrib.auth.views import LoginView
+
 
 User = get_user_model()
 
 
+class CustomLoginView(LoginView):
+    form_class = CustomAuthenticationForm
+    template_name = 'registration/login.html'
+    success_url = reverse_lazy('login')
+
+
 class RegisterView(CreateView):
+    """
+    View para registro, criação dos usuarios
+    """
     model = User
     form_class = CustomUserCreationForm
     template_name = 'registration/cadastro.html'
     success_url = reverse_lazy('login')  
     
 
-class CustomPasswordResetView(FormView):
+class CustomPasswordResetUpdateView(FormView):
+    """
+    View para update de senha do usuario
+    """
     template_name = 'registration/password_reset.html'
     form_class = PasswordResetCustomForm
     success_url = reverse_lazy('password_reset_done')
@@ -66,16 +78,24 @@ class CustomPasswordResetView(FormView):
         return super().form_valid(form)
 
 
-
 class CustomPasswordResetDoneView(auth_views.PasswordResetDoneView):
+    """
+    View para feedaback de troca da senha realizada com sucesso
+    """
     template_name = 'registration/password_reset_realized.html'
 
+
 class CustomPasswordResetConfirmView(auth_views.PasswordResetConfirmView):
+    """
+    View para confirmação da senha
+    """
     template_name = 'registration/password_confirm_new_reset.html'
     form_class = CustomSetNewPasswordForm
     success_url = reverse_lazy('password_reset_complete')
 
-from django.contrib.auth import views as auth_views
 
 class CustomPasswordResetCompleteView(auth_views.PasswordResetCompleteView):
+    """
+    View para troca de senha realizada com sucesso
+    """
     template_name = 'registration/password_reset_c.html'

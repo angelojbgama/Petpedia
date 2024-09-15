@@ -1,7 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import SetPasswordForm
 from django.core.exceptions import ValidationError
-from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from .models import USUARIO
+from django.contrib.auth.forms import AuthenticationForm
 
 
 class PasswordResetCustomForm(forms.Form):
@@ -12,7 +14,6 @@ class PasswordResetCustomForm(forms.Form):
             'placeholder': 'Digite seu e-mail'
         })
     )
-
 
 class CustomSetNewPasswordForm(SetPasswordForm):
     def clean_new_password1(self):
@@ -28,33 +29,29 @@ class CustomSetNewPasswordForm(SetPasswordForm):
         
         return password
 
+class CustomUserCreationForm(UserCreationForm):
+    class Meta:
+        model = USUARIO
+        fields = ('username', 'email', 'password1', 'password2', 'localidade', 'telefone', 'is_ong', 'nome_ong')
 
-class CustomUserCreationForm(forms.ModelForm):
-    password1 = forms.CharField(
-        label='Senha',
-        widget=forms.PasswordInput,
-    )
-    password2 = forms.CharField(
-        label='Confirme a Senha',
-        widget=forms.PasswordInput,
-    )
+class CustomAuthenticationForm(AuthenticationForm):
+    # Remover o campo de e-mail e manter apenas usuário e senha
+    username = forms.CharField(label='Nome de Usuário')
+    password = forms.CharField(label='Senha', widget=forms.PasswordInput)
 
     class Meta:
-        model = User
-        fields = ['username', 'email']
+        fields = ['username', 'password']
 
-    def clean_password2(self):
-        password1 = self.cleaned_data.get("password1")
-        password2 = self.cleaned_data.get("password2")
+    def clean(self):
+        cleaned_data = super().clean()
+        username = cleaned_data.get('username')
+        password = cleaned_data.get('password')
 
-        if password1 and password2 and password1 != password2:
-            raise ValidationError("As senhas não coincidem")
-
-        return password2
-
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        user.set_password(self.cleaned_data["password1"])
-        if commit:
-            user.save()
-        return user
+        if username and password:
+            user = self.get_user()
+            if not user or not user.check_password(password):
+                raise forms.ValidationError("Credenciais inválidas.")
+            if not user.is_active:
+                raise forms.ValidationError("Este usuário está inativo.")
+        
+        return cleaned_data
