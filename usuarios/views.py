@@ -11,13 +11,15 @@ from django.contrib.auth.tokens import default_token_generator
 from django.conf import settings
 from django.shortcuts import redirect
 from django.contrib.auth import get_user_model 
-from .forms import PasswordResetCustomForm, CustomAuthenticationForm
+
+
+from .forms import CustomUserCreationForm, CustomUserChangeForm, CustomSetNewPasswordForm, PasswordResetCustomForm, CustomAuthenticationForm
+
 from django.contrib.auth import views as auth_views
-from .forms import CustomSetNewPasswordForm
-from .forms import CustomUserCreationForm, CustomUserChangeForm
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView
+
 
 
 User = get_user_model()

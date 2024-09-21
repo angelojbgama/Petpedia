@@ -2,7 +2,8 @@ from django import forms
 from django.contrib.auth.forms import SetPasswordForm
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import UserCreationForm
-from .models import USUARIO
+from core.models import USUARIO
+
 from django.contrib.auth.forms import AuthenticationForm
 
 

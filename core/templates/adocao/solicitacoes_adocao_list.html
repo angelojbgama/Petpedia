@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Solicitações de Adoção Pendentes</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Adotante</th>
+            <th>Pet</th>
+            <th>Data da Solicitação</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for solicitacao in solicitacoes %}
+        <tr>
+            <td>{{ solicitacao.usuario_adotante.username }}</td>
+            <td>{{ solicitacao.pet.nome }}</td>
+            <td>{{ solicitacao.data_solicitacao }}</td>
+            <td>
+                <form method="post" action="{% url 'atualizar_adocao' solicitacao.pk %}">
+                    {% csrf_token %}
+                    <button name="estado" value="aprovado" type="submit">Aprovar</button>
+                    <button name="estado" value="rejeitado" type="submit">Rejeitar</button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">Nenhuma solicitação pendente.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

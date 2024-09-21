@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de PETs{% endblock %}
+
+{% block content %}
+<h2>Lista de PETs</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Espécie</th>
+            <th>Idade</th>
+            <th>Vacinado</th>
+            <th>Disponível para Adoção</th>
+            <th>Dono</th>
+            <th>Localidade</th>
+            <th>Características</th>
+            <th>Foto</th>
+            <th>Ação</th>  <!-- Nova coluna para o botão de adoção -->
+        </tr>
+    </thead>
+    <tbody>
+        {% for pet in pets %}
+        <tr>
+            <td>{{ pet.nome }}</td>
+            <td>{{ pet.get_especie_display }}</td>
+            <td>{{ pet.idade }}</td>
+            <td>{{ pet.vacinado|yesno:"Sim,Não" }}</td>
+            <td>{{ pet.disponivel_adocao|yesno:"Sim,Não" }}</td>
+            <td>{{ pet.dono }}</td>
+            <td>{{ pet.localidade }}</td>
+            <td>{{ pet.caracteristicas }}</td>
+            <td>
+                {% if pet.foto %}
+                <img src="{{ pet.foto.url }}" alt="{{ pet.nome }}" style="width:100px;height:auto;">
+                {% else %}
+                Nenhuma foto
+                {% endif %}
+            </td>
+            <td>
+                <!-- Exibe o botão de adoção apenas para usuários que não são ONGs e pets disponíveis -->
+                {% if pet.disponivel_adocao and not request.user.is_ong %}
+                <form method="post" action="{% url 'solicitar_adocao' pet.pk %}">
+                    {% csrf_token %}
+                    <button type="submit">Adotar</button>
+                </form>
+                {% else %}
+                Não disponível para adoção
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="9">Nenhum PET cadastrado.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

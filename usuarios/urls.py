@@ -1,5 +1,6 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
+from pets.views import PETCreateView
 
 from .views import RegisterView, CustomPasswordResetUpdateView, CustomPasswordResetDoneView, CustomPasswordResetConfirmView, CustomPasswordResetCompleteView, CustomLoginView, CustomUserUpdadteView, PerfilUsuarioView
 
